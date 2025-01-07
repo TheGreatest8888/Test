@@ -1,4 +1,4 @@
-**\-Branching Strategy-**
+**-Branching Strategy-**
 -------------------------
 
 *   Branching strategy off of the protected default branch should be as follows:
@@ -19,7 +19,7 @@
             
     *   **hotfix-short-description-fdpetde-####**
         
-        *   Branching off of the default branch as well, this hotfix-\* branch would represent a defect or some sort of unplanned work that would need to happen and merged into master to move forward effectively. 
+        *   Branching off of the default branch as well, this hotfix-* branch would represent a defect or some sort of unplanned work that would need to happen and merged into master to move forward effectively. 
             
         *   The Draft PR would still be opened right at the beginning of this branch's lifecycle and work done in this branch should only reflect that of the description/AC for the defect (fdpetde-####) created in Jira
             
