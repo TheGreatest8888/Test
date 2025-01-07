@@ -1,0 +1,36 @@
+**\-Branching Strategy-**
+-------------------------
+
+*   Branching strategy off of the protected default branch should be as follows:
+    
+    *   **feature-short-description-fdpetde-####** 
+        
+        *   This feature branch indicates that this is planned work (related to a specific user story, fdpetde-####) that a given engineer would be assigned or paired on. 
+            
+        *   Work in this feature branch would only scope to that of the Acceptance Criteria of the user story
+            
+        *   All other work should be handled in the form of a defect/hotfix for the repository
+            
+        *   Branch name will be all lowercase
+            
+        *   Branch name short-description should be a short, ideally a three word, description
+            
+        *   All words in branch name should be separated by hyphens
+            
+    *   **hotfix-short-description-fdpetde-####**
+        
+        *   Branching off of the default branch as well, this hotfix-\* branch would represent a defect or some sort of unplanned work that would need to happen and merged into master to move forward effectively. 
+            
+        *   The Draft PR would still be opened right at the beginning of this branch's lifecycle and work done in this branch should only reflect that of the description/AC for the defect (fdpetde-####) created in Jira
+            
+        *   Branch name will be all lowercase
+            
+        *   Branch name short-description should be a short, ideally a three word, description
+            
+        *   All words in branch name should be separated by hyphens
+            
+    *   Draft PR opened immediately after creating branch
+        
+        *   Assumes some Jenkins job is configurations such as: PRs are used instead of branches, etc.
+            
+            *   ToDo: list out Jenkins job configs all jobs should be set to
