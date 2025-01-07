@@ -1,0 +1,26 @@
+***** PLEASE RECORD ALL CHANGELOG ITEMS WITH THE ASSOCIATED JIRA ISSUE ******
+All notable changes to this project will be documented in this file.
+
+The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
+
+Please structure bullets as follows:
+To do a thing.
+
+For example:
+Added new table to the github schema.
+
+
+New Feature/Functionality
+
+FDPETDE-nnn | (summary)
+Defects
+FDPETDE-nnn | (summary)
+Debt
+FDPETDE-nnn | (summary)
+
+
+Using the CHANGELOG file:
+Move the entry between START LATEST and END LATEST below END LATEST with a single line buffer.
+Add your entry as outlined above between START LATEST and END LATEST.
+-- START LATEST --
+-- END LATEST --
