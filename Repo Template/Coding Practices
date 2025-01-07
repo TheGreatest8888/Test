@@ -1,0 +1,62 @@
+SCM Practices
+-Repository configuration -
+When new repo is created, use ghct-github-template-docs as the template
+All new repo names should begin with "ghct"
+All new repo names should be lowercase and words should be separated by hyphens
+The following teams should be added to the repo:
+G_GTHB_CIG_GHCT_ADM - Admin privileges
+G_GTHB_CIG_GHCT_CDOWNR - Write privileges (if GHES repo)
+G_GTHB_EDO_GHCT_CDOWNR - Write privileges (if GHEC repo)
+Conditionally, if needed, add a technology specific code owner file like G_GTHB_EDO_GHCT_KONG_CDOWNR
+The default branch is always protected
+PR's require at least 2 review
+"Include Administrators" is checked to enforce branch protection rules - admin override of PR's is NOT acceptable.  Find SOMEONE.  In an "emergency", call Matt or another team member.
+Topics
+Topics github, ghct and cmdb-ba002043 are added to all GitHub/migration related repos
+Topics should be used in both USM GHES and GHEC
+Topics artifactory, jfrog and ba16906 are added to all JFrog Artifactory related repos
+Topics should be used in both USM GHES and GHEC
+Additional topics can be added but these are the minimum topics needed
+
+
+Python Coding Practices
+PEP 8 Coding standards should be followed
+https://peps.python.org/pep-0008/
+Non-exhaustive list of items (will grow over time)
+ Imports
+Imports at top of file and ordered by standard, followed by third party, followed by local imports, all in alphabetical order. This allows folks new to the project to quickly know where the imports are from and an import more easily found when in alphabetical order.
+Note: standard imports like "import <mod>" should be always prior to "from <mod> imports"
+E.g.
+# Standard imports
+import os
+import sys
+ 
+# Third party imports
+import requests 
+ 
+# Local imports
+from send_email import send_em, send_email_notification
+
+
+PEP 257 Docstring Conventions should be followed for all new code 
+Based on the PEP8 recommendation, all the docstrings should be enclosed by triple double quotes. Please refer to https://peps.python.org/pep-0257/
+"All modules should normally have docstrings, and all functions and classes exported by a module should also have docstrings."
+Update existing code if possible during code updates
+Use Code Quality tools to scan code
+Use the following Python libraries to check python code prior to committing. If the individual's IDE is configured to use extensions that provide the same info that will work just as well. Make sure the info the tools call out are addressed prior to committing the code so reviewers do not need to spend time reviewing coding style, etc and instead can focus on the logic in the code.
+Run these imports to install the libraries into the virtual environment, not the system Python install
+pip install isort
+pip install flake8
+pip install pycodestyle
+pip install pylint
+pip install flake8-pydocstyle
+pip install flake8-pylint
+pip install flake8-bandit
+pip install flake8-black
+
+
+On the command line run these three commands from the repository's root dir. Black will format your code and fix some small errors Flake8 will flag. Flake8 will run the extensions for pydocstyle, pylint, etc so those do not need to be run individually unless you want to see extended output from those tools. Flake 8 has a parameter for --max-line-length. We are setting it to 100. While PEP8 recommends 79 chars, it also acknowledges that limit is restrictive for some smaller teams. Others like 120 chars. Setting it to 100 for the broader PE team provides us with a compromise. If some smaller teams of 3 to 4 folks want to use 120 then that's acceptable too but we should limit 120 as the upper bound for smaller teams and 100 for the broader team.
+$ isort .
+$ black .
+$ flake8 --max-line-length 100
+
