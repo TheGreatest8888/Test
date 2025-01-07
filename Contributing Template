@@ -1,0 +1,113 @@
+**Contributing 🔥**
+===================
+
+**This repository contains**
+----------------------------
+
+*   Main branch
+    
+*   Feature branches
+    
+*   Hot Fix branches
+    
+
+**Create a branch**
+-------------------
+
+Branching strategy off of the protected default branch should be as follows:
+
+*   **feature-short-description-fdpetde-####**
+    
+*   This feature branch indicates that this is planned work (related to a specific user story, fdpetde-####) that a given engineer would be assigned or paired on.
+    
+*   Work in this feature branch would only scope to that of the Acceptance Criteria of the user story
+    
+*   All other work should be handled in the form of a defect/hotfix for the repository
+    
+*   Branch name will be all lowercase
+    
+*   Branch name short-description should be a short, ideally a three word, description
+    
+*   All words in branch name should be separated by hyphens
+    
+
+**hotfix-short-description-fdpetde-####**
+
+*   Branching off of the default branch as well, this hotfix-\* branch would represent a defect or some sort of unplanned work that would need to happen and merged into master to move forward effectively.
+    
+*   The Draft PR would still be opened right at the beginning of this branch's lifecycle and work done in this branch should only reflect that of the description/AC for the defect (fdpetde-####) created in Jira
+    
+*   Branch name will be all lowercase
+    
+*   Branch name short-description should be a short, ideally a three word, description
+    
+*   All words in branch name should be separated by hyphens
+    
+
+### **REFERENCE:** [**Recommended GitHub Branching Strategies**](https://confluence.sys.cigna.com/display/DvOp/GitHub+-+Branch+Naming+and+Branch+Protection)
+
+**Open a draft pull request**
+-----------------------------
+
+*   The first commit in the branch should be to [**CHANGELOG**](https://github.sys.cigna.com/Muzamal-Hussain-C8S7J6/Test/blob/duplicate-license-script/CHANGELOG.md)
+    
+    *   In the CHANGELOG, move the previous entry(s) in Latest to immediately after "-- END LATEST --" with a single line buffer
+        
+    *   Add an anchor tag (i.e. \[x.x.x\]) to Latest entry based on [**semantic versioning**](https://semver.org/) principles and the guidance found in CHANGELOG
+        
+*   If the repo has a technology which requires a specific code owner like G\_GTHB\_EDO\_GHCT\_KONG\_CDOWNR, ensure that it's created and referenced in [**CODEOWNERS**](https://github.sys.cigna.com/Muzamal-Hussain-C8S7J6/Test/blob/duplicate-license-script/.github/CODEOWNERS)
+    
+*   Verify that the CODEOWNERS file references the proper code owner github team (G\_GTHB\_CIG\_GHCT\_CDOWNR or G\_GTHB\_EDO\_GHCT\_CDOWNR), and the line in CODEOWNERS with the team referenced is not commented out
+    
+*   Create and apply a Label to this Pull Request with the value matching the anchor tag you added in CHANGELOG
+    
+*   Then, the Draft PR can be created
+    
+
+**Mark draft pull request "Ready for Review"**
+----------------------------------------------
+
+*   Once your changes have been completed and tested, click on the button in the pull request converstion tab to mark it "Ready for Review"
+    
+*   At this time, because the code owner github teams are setup for auto assignment, and have been included in the CODEOWNER file, and that team has write permissions, two people on the team will be auto requested as reviewers for the PR
+    
+
+**Peer Review process**
+-----------------------
+
+*   Once auto request has happened, the requested reviewers will receive an email requesting "..your review". This means they will be doing the peer review.
+    
+*   The rest of the team will receive an email that requests review as a member of the code owners team. They are encouraged to look at the PR and add comments if they like, but are not required to do so.
+    
+*   The requested reviewers who were auto assigned are expected to complete their review within one business day. i.e. 2:00 PM assignment on Wednesday requires response by 2:00 PM Thursday.
+    
+
+**How to review**
+-----------------
+
+*   When possible, create inline comments to change code
+    
+*   If desired, add a suggested change by hitting (suggested changes can be committed with a single click)
+    
+
+**Responding to requested changes**
+-----------------------------------
+
+*   Read suggested changes
+    
+*   Discuss changes if neccessary
+    
+*   Resolve conversation
+    
+*   Request another review by clicking the Re-request Review icon next to the names of the reviewers (circular arrows)
+    
+
+**Approved**
+------------
+
+*   Once the pull request is approved by two reviewers, merge it
+    
+*   Delete feature or hot fix branch
+    
+
+### **REFERENCE** [**GitHub Help Page for CONTRIBUTING**](https://help.github.com/en/github/building-a-strong-community/setting-guidelines-for-repository-contributors)
