@@ -1,0 +1,16 @@
+Hi Rahul,
+
+I need you to create a repo for me, im going to followeverything you do and create this in my work github account. The repo has to follow the stacking branching startegy. I inculde the Readme.md, contrubuting, changlog, PR tempalte, branching startegy, etc, of my companies, please follow them to make this repo. 
+
+I already have a script I added to the main branch. I don't know how to use github to show my work in a work enviroment as a professional. I got yelled at by my manger becuase I created a 300 line script before and he asked for my repo and I didnt have nay, so know I need a repo created that shows the me creating this script. 
+ 
+
+
+The primary purpose of this script is -  The script retrieves the latest updates from the GitHub Cloud Changelog RSS feed (https://github.blog/changelog) and post a summary to a Webex room called  `GitHub Cloud Changelog`
+The jira story is called  ends in fdpetde-1985. For example, a branch can be called feature-webex-changelog-notifactions-fdpetde-1985. 
+
+You can do  whatever you like that you think will make this eaiser for me, if you want to create a guide for me to follow or whatver.
+
+For example, I need to know when to commit, when to create draft pr, I need the working standard commit messages, etc. 
+
+
