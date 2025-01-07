@@ -6,10 +6,6 @@ One Paragraph of project description goes here.  Describe what the project does 
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-## Work in Progress
-
-### API Call Timing Logic 
-Adding in logic to measure the time each API call takes to have the script preform faster
 
 ### Prerequisites
 
