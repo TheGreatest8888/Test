@@ -1,0 +1,181 @@
+#!/usr/bin/env python3
+import feedparser
+import requests
+import os
+import re
+from datetime import datetime, timedelta
+
+# Configuration for Webex and RSS Feed
+WEBEX_BOT_TOKEN = "_"  # Insert your Webex bot token
+WEBEX_ROOM_ID = ""     # Insert your Webex room ID
+RSS_FEED_URL = "https://github.blog/changelog/feed/"
+LOGFILE = "/Users/c8s7j6/projects/github_changelog_bot/rss_script.log"
+
+
+def rotate_log():
+    """
+    Rotates the log file by keeping only entries from the last 3 days.
+    Older entries are deleted to prevent the log file from growing indefinitely.
+    """
+    new_lines = []
+    now = datetime.now()
+
+    # Read all log entries
+    with open(LOGFILE, "r") as lf:
+        lines = lf.readlines()
+
+    for line in lines:
+        # Extract the timestamp (first 19 characters) from each log entry
+        date_str = line[:19]
+        try:
+            # Parse the timestamp and calculate the age of the log entry
+            line_time = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+            if now - line_time <= timedelta(days=3):  # Keep entries <= 3 days old
+                new_lines.append(line)
+        except:
+            # If parsing fails, retain the line to avoid data loss
+            new_lines.append(line)
+
+    # Overwrite the log file with the filtered entries
+    with open(LOGFILE, "w") as lf:
+        lf.writelines(new_lines)
+
+
+def log_message(msg: str):
+    """
+    Writes a message to the log file with a timestamp.
+    This is used for tracking script execution, errors, and posted links.
+    """
+    with open(LOGFILE, "a") as log:
+        log.write(f"{datetime.now()} - {msg}\n")
+
+
+def get_last_posted_link():
+    """
+    Scans the log file for the most recent 'LAST_POSTED_LINK=...' entry.
+    This ensures the script avoids reposting duplicate entries.
+    """
+    last_link = ""
+    with open(LOGFILE, "r") as f:
+        for line in f:
+            # Look for lines containing 'LAST_POSTED_LINK=' and extract the URL
+            match = re.search(r"LAST_POSTED_LINK=(https?://\S+)", line)
+            if match:
+                last_link = match.group(1)
+    return last_link
+
+
+def update_last_posted_link(link: str):
+    """
+    Appends the last posted link to the log file.
+    This ensures duplicate prevention for future runs.
+    """
+    log_message(f"LAST_POSTED_LINK={link}")
+
+
+def send_message_to_webex(markdown_msg: str) -> bool:
+    """
+    Sends a message to a Webex room using Markdown formatting.
+    Returns True if the message was successfully posted, otherwise False.
+    """
+    url = "https://webexapis.com/v1/messages"
+    headers = {
+        "Authorization": f"Bearer {WEBEX_BOT_TOKEN}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "roomId": WEBEX_ROOM_ID,
+        "markdown": markdown_msg
+    }
+    resp = requests.post(url, json=data, headers=headers)
+    if resp.status_code == 200:
+        return True
+    else:
+        log_message(f"Failed to send message: {resp.status_code} {resp.text}")
+        return False
+
+
+def parse_feed():
+    """
+    Fetches and parses the GitHub changelog RSS feed.
+    Converts HTML content into Markdown for clean display in Webex.
+    """
+    feed = feedparser.parse(RSS_FEED_URL)
+    entries = []
+
+    for ent in feed.entries:
+        title = ent.title  # The title of the RSS entry
+        link = ent.link    # The URL of the RSS entry
+
+        # Extract the main content or fallback to summary
+        if hasattr(ent, "content") and len(ent.content) > 0:
+            raw_html = ent.content[0].value
+        else:
+            raw_html = getattr(ent, "summary", "")
+
+        # Clean and format the HTML content into Markdown
+        raw_html = re.sub(r'href="(#.*?)"', lambda m: f'href="{link}{m.group(1)}"', raw_html)
+        raw_html = raw_html.replace("<strong>", "**").replace("</strong>", "**")
+        raw_html = raw_html.replace("<em>", "_").replace("</em>", "_")
+        raw_html = re.sub(
+            r'<a\s+href="(.*?)">(.*?)</a>',
+            lambda m: f"[{m.group(2)}]({m.group(1)})",
+            raw_html
+        )
+        raw_html = re.sub(r'<(h[1-6]).*?>(.*?)</\1>', lambda m: f"\n{'#' * int(m.group(1)[1])} {m.group(2)}\n", raw_html)
+        raw_html = re.sub(r'</?(ul|ol).*?>', '', raw_html)
+        raw_html = re.sub(r'<li>(.*?)</li>', lambda m: f"- {m.group(1)}", raw_html)
+        raw_html = re.sub(r'</?p.*?>', '\n', raw_html)
+        raw_html = re.sub(r'<br\s*/?>', '\n', raw_html)
+        raw_html = re.sub(r'<[^>]+>', '', raw_html)
+        raw_html = re.sub(r'\n\s*\n+', '\n\n', raw_html).strip()
+
+        # Final Markdown message
+        final_output = (
+            f"# [{title}]({link})\n\n"
+            f"**Details:**\n\n"
+            f"{raw_html}\n\n"
+        )
+
+        entries.append({"title": title, "link": link, "content": final_output})
+
+    return entries
+
+
+def main():
+    """
+    The main function:
+    - Rotates logs (removes old entries)
+    - Parses the RSS feed for new updates
+    - Posts new updates to Webex
+    - Tracks the last posted link to avoid duplicates
+    """
+    rotate_log()
+    log_message("Script execution started.")
+
+    # Parse the RSS feed
+    entries = parse_feed()
+    last_posted_link = get_last_posted_link()
+
+    # Identify and filter new entries
+    new_entries = []
+    for entry in reversed(entries):
+        if entry["link"] == last_posted_link:
+            break
+        new_entries.append(entry)
+
+    # Post new entries to Webex
+    if new_entries:
+        for entry in reversed(new_entries):
+            if send_message_to_webex(entry["content"]):
+                update_last_posted_link(entry["link"])
+                log_message(f"Posted update: {entry['title']}")
+    else:
+        log_message("No new updates found.")
+
+    log_message("Script execution completed.")
+
+
+if __name__ == "__main__":
+    main()
+
